@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DogFinder - Cães Desaparecidos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+  <header>
+    <img src="assets/logo.svg" alt="Logo DogFinder" class="logo"/>
+    <h1><i class="fas fa-dog"></i> DogFinder</h1>
+    <button id="themeToggle" title="Alternar tema"><i class="fas fa-moon"></i></button>
+  </header>
+
+  <div class="container">
+    <nav>
+      <button onclick="voltarInicio()"><i class="fas fa-home"></i> Início</button>
+      <button onclick="abrirCadastro()"><i class="fas fa-plus"></i> Cadastrar Cão</button>
+      <a href="adocao.html">
+  <button><i class="fas fa-paw"></i> Adoção</button>
+</a>
+      <button onclick="abrirFavoritos()"><i class="fas fa-star"></i> Favoritos</button>
+      <button onclick="abrirHistorico()"><i class="fas fa-history"></i> Histórico</button>
+      <button onclick="abrirPerfil()"><i class="fas fa-user"></i> Meu Perfil</button>
+      <button onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </nav>
+
+    <main>
+      <section id="buscaSection" class="box">
+        <input type="text" id="buscaInput" placeholder="Buscar por nome, raça, localização..." oninput="buscarCao()">
+        <div class="filters">
+          <select id="filtroSexo" onchange="aplicarFiltros()">
+            <option value="">Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+          </select>
+          <select id="filtroIdade" onchange="aplicarFiltros()">
+            <option value="">Idade</option>
+            <option value="0-2">Até 2 anos</option>
+            <option value="3-5">3-5 anos</option>
+            <option value="6+">6+ anos</option>
+          </select>
+          <select id="filtroEstado" onchange="aplicarFiltros()">
+            <option value="">Estado</option>
+            <option value="SC">SC</option>
+            <option value="PR">PR</option>
+            <option value="SP">SP</option>
+          </select>
+          <select id="filtroRaca" onchange="aplicarFiltros()">
+            <option value="">Raça</option>
+            <option value="Labrador">Labrador</option>
+            <option value="Poodle">Poodle</option>
+            <option value="Pastor Alemão">Pastor Alemão</option>
+            <option value="Shih Tzu">Shih Tzu</option>
+            <option value="SRD">SRD</option>
+          </select>
+          <button onclick="limparFiltros()">Limpar Filtros</button>
+        </div>
+        <p id="contadorCaes"></p>
+      </section>
+
+      <section id="listaSection" class="grid"></section>
+
+      <section id="cadastroSection" class="box" style="display:none;">
+        <h2>Cadastrar Cão Desaparecido</h2>
+        <form id="cadastroCaoForm" onsubmit="event.preventDefault(); cadastrarCao();">
+          <input type="text" id="nome" placeholder="Nome" required/>
+          <textarea id="descricao" placeholder="Descrição" required></textarea>
+          <input type="number" id="idade" placeholder="Idade" min="0" required/>
+          <input type="text" id="raca" placeholder="Raça" required/>
+          <input type="text" id="caracteristicas" placeholder="Características"/>
+          <select id="sexo" required>
+            <option value="" disabled selected>Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+          </select>
+          <input type="text" id="estado" placeholder="Estado (ex.: SC)" required/>
+          <input type="text" id="localizacao" placeholder="Última Localização" required/>
+          <input type="url" id="imagem" placeholder="URL da Foto" required/>
+          <input type="text" id="recompensa" placeholder="Recompensa (opcional)"/>
+          <label><input type="checkbox" id="prioridade"/> Marcar como prioridade</label>
+          <button type="submit"><i class="fas fa-save"></i> Salvar</button>
+        </form>
+      </section>
+
+      <section id="perfilSection" class="box" style="display:none;">
+        <h2>Meu Perfil</h2>
+        <form id="perfilForm" onsubmit="event.preventDefault(); salvarPerfil();">
+          <input type="text" id="perfilNome" placeholder="Seu nome"/>
+          <input type="email" id="perfilEmail" placeholder="Seu email"/>
+          <input type="tel" id="perfilTelefone" placeholder="Seu telefone"/>
+          <button type="submit"><i class="fas fa-save"></i> Salvar Perfil</button>
+        </form>
+      </section>
+
+      <section id="favoritosSection" class="grid" style="display:none;">
+        <h2>Meus Favoritos</h2>
+      </section>
+
+      <section id="historicoSection" class="box" style="display:none;">
+        <h2>Histórico de Ações</h2>
+        <ul id="historicoLista"></ul>
+      </section>
+    </main>
+  </div>
+
+  <div id="authOverlay" class="overlay">
+    <div class="auth-box">
+      <h2>Login</h2>
+      <input type="text" id="usuario" placeholder="Usuário">
+      <input type="password" id="senha" placeholder="Senha">
+      <button onclick="fazerLogin()">Entrar</button>
+      <p>Ou crie uma conta:</p>
+      <input type="text" id="novoUsuario" placeholder="Novo usuário">
+      <input type="password" id="novaSenha" placeholder="Nova senha">
+      <button onclick="fazerCadastro()">Cadastrar</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
