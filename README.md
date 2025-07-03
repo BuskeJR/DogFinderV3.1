@@ -1,94 +1,149 @@
-# 🐾 DogFinder
+# 🐾 DogFinder - Sistema de Cadastro e Busca de Cães Desaparecidos
 
-Aplicação web criada como projeto acadêmico para cadastro, busca e gerenciamento de informações sobre cães desaparecidos. Este sistema foi desenvolvido como parte de um trabalho de faculdade com o objetivo de demonstrar conhecimentos em desenvolvimento web front-end e back-end.
-
----
-
-## 📌 Versão
-**v3.1**
-
----
-
-## 🎓 Sobre o Projeto
-
-O DogFinder permite que tutores registrem informações de seus cães desaparecidos, visualizem cadastros, filtrem por características e recebam notificações sobre possíveis localizações. 
-
-Foi implementado inicialmente com **HTML, CSS e JavaScript** (armazenamento local com LocalStorage), com possibilidade de expansão para uso de **Node.js** e **SQL Server Express**.
-
----
-
-## ✨ Funcionalidades Principais
-
-✅ Cadastro de cães desaparecidos  
-✅ Filtros por nome, raça, sexo, idade e estado  
-✅ Favoritos e histórico de ações  
-✅ Cadastro de perfil de usuário  
-✅ Marcação de prioridade em registros  
-✅ Comentários em cada anúncio  
-✅ Temas claro e escuro  
-✅ Página separada de cães disponíveis para adoção  
-✅ Grupo de busca colaborativo  
-✅ Exibição de estatísticas de registros  
+Este projeto foi desenvolvido como parte de um trabalho acadêmico. O objetivo é permitir o **cadastro, busca e gerenciamento de informações sobre cães desaparecidos**, além de contar com recursos como favoritos, histórico de ações e perfil do usuário.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-- HTML5
-- CSS3
-- JavaScript
-- Font Awesome
-- (Opcional) Node.js + Express
-- (Opcional) SQL Server Express
+- **Node.js + Express**
+- **SQL Server Express**
+- **HTML + CSS + JavaScript Vanilla**
+- **LocalStorage (em parte do frontend)**
+- **mssql (conector SQL Server para Node.js)**
 
 ---
 
-## 🛠️ Como Executar
+## 🗂 Estrutura do Projeto
 
-1. Clone este repositório:
+ProjetoV3/
+│
+├── Backend/
+│ ├── server.js # API Express que conecta no SQL Server
+│ └── public/ # Frontend estático
+│ ├── index.html
+│ ├── adocao.html
+│ ├── script.js
+│ ├── style.css
+│ └── assets/
+│ └── logo.svg
+│
+├── package.json
+└── .gitignore
 
-2. Abra a pasta `dogfinder`.
-
-3. Clique no arquivo `index.html` para abrir no navegador.
-
-4. Para rodar o back-end (opcional):
-
-- Instale dependências:
-
-  ```
-  npm install
-  ```
-
-- Inicie o servidor:
-
-  ```
-  node server.js
-  ```
-
-5. Acesse `http://localhost:3000` (caso utilize Node.js).
+yaml
+Copiar
+Editar
 
 ---
 
-## 💡 Próximos Passos
+## ⚙️ Como Executar o Projeto
 
-- Implementar integração completa com SQL Server Express
-- Criar API RESTful para registros de cães e perfis de usuários
-- Adicionar upload real de imagens
+### 1️⃣ Instale as dependências
 
----
+Dentro da pasta `Backend`:
 
-## 🎓 Informações Acadêmicas
+```bash
+npm install
+2️⃣ Configure o banco de dados
+Crie o banco DogFinderDB no seu SQL Server com as tabelas:
 
-Projeto desenvolvido como trabalho de faculdade na disciplina de **Desenvolvimento de Aplicações Web**.
+sql
+Copiar
+Editar
+CREATE TABLE Caes (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(100),
+  Descricao NVARCHAR(MAX),
+  Idade INT,
+  Raca NVARCHAR(100),
+  Caracteristicas NVARCHAR(255),
+  Sexo NVARCHAR(10),
+  Estado NVARCHAR(50),
+  Localizacao NVARCHAR(255),
+  Imagem NVARCHAR(500),
+  Recompensa NVARCHAR(100),
+  Prioridade BIT
+);
 
----
+CREATE TABLE Comentarios (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  CaoId INT FOREIGN KEY REFERENCES Caes(Id),
+  Comentario NVARCHAR(MAX)
+);
 
-## 👤 Autor
+CREATE TABLE Favoritos (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  CaoId INT FOREIGN KEY REFERENCES Caes(Id)
+);
 
-João Vitor Buske
+CREATE TABLE Historico (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Acao NVARCHAR(MAX),
+  Data DATETIME
+);
 
----
+CREATE TABLE Perfil (
+  Id INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(100),
+  Email NVARCHAR(100),
+  Telefone NVARCHAR(50)
+);
+3️⃣ Configure sua conexão
+No server.js, ajuste se necessário:
 
-## 📝 Licença
+javascript
+Copiar
+Editar
+const config = {
+  user: "sa",
+  password: "SuaSenhaAqui",
+  server: "localhost\\SQLEXPRESS",
+  database: "DogFinderDB",
+  options: {
+    encrypt: false,
+    trustServerCertificate: true
+  }
+};
+4️⃣ Inicie o servidor
+Ainda na pasta Backend:
 
-Este projeto é apenas para fins educacionais.
+bash
+Copiar
+Editar
+node server.js
+A API estará em:
+
+arduino
+Copiar
+Editar
+http://localhost:3000
+🖥 Acessando o Frontend
+Abra no navegador:
+
+arduino
+Copiar
+Editar
+http://localhost:3000
+Lá você poderá:
+
+✅ Cadastrar cães desaparecidos
+✅ Visualizar e filtrar a lista
+✅ Favoritar cães
+✅ Comentar
+✅ Gerenciar perfil e histórico
+✅ Alternar tema claro/escuro
+
+📝 Observações Importantes
+O sistema de adoção (adocao.html) utiliza LocalStorage apenas como simulação.
+
+O restante dos dados vem da API Node.js conectada ao SQL Server.
+
+Foi criado como um projeto acadêmico, podendo servir de base para aplicações reais com melhorias.
+
+💡 Créditos
+Projeto desenvolvido por João Vitor Buske Marchel como parte do curso de Ads.
+
+yaml
+Copiar
+Editar
